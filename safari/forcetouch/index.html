@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    .box {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: red;
+      margin: 60px auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="box" class="box"></div>
+
+  <script>
+    (function () {
+      window.onload = function () {
+        const box = document.getElementById('box')
+        const width = box.clientWidth
+        const height = box.clientHeight
+        box.addEventListener('touchforcechange', (e) => {
+          const scale = 1 + e.touches[0].force
+
+          box.style.width = width * scale + 'px'
+          box.style.height = height * scale + 'px'
+        })
+      }
+    })()
+  </script>
+</body>
+</html>

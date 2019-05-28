@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas filter</title>
+  <style>
+    .canvas-panel, .control {
+      width: fit-content;
+      margin: 20px auto 10px;
+    }
+    #origin-canvas, #dirty-canvas {
+      display: inline-block;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas-panel">
+    <canvas id="origin-canvas" width="500" height="500"></canvas>
+    <canvas id="dirty-canvas" width="500" height="500"></canvas>
+  </div>
+
+  <div class="control">
+    <select id="filter-selector" value="reverse">
+      <option value="gray">灰度图</option>
+      <option value="black">黑白</option>
+      <option value="reverse">反相</option>
+      <option value="blur">模糊</option>
+    </select>
+    <button id="confirm-btn">确定</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

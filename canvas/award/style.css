@@ -1,0 +1,21 @@
+.scrap_box {
+  width: 120px;
+  height: 60px;
+  line-height: 60px;
+  border: 1px solid #999;
+  position: relative;
+}
+
+.award_text {
+  text-align: center;
+  height: 60px;
+  line-height: 60px;
+  width: 120px;
+  margin: 0;
+}
+
+#mask_layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

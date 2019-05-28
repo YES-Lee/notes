@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas</title>
+  <style></style>
+</head>
+<body>
+  <button id="thanos-btn">thanos</button>
+  <canvas id="canvas-a"></canvas>
+  <canvas id="canvas-b"></canvas>
+  <script>
+    (function () {
+
+      function Pixel ({x = 0, y = 0, dx = 0, dy = 0, r = 0, g = 0, b = 0, a = 0} = {}) {
+          this.r = r;
+          this.g = g;
+          this.b = b;
+          this.a = a;
+
+          // 像素的原始位置
+          this.x = x;
+          this.y = y;
+
+          // 真实位置
+          this.dx = dx;
+          this.dy = dy;
+
+          this.toRgbaArray = function () {
+            return [ this.r, this.g, this.b, this.a ]
+          }
+
+          this.toImageData = function () {
+            const imageData = new ImageData(1, 1);
+            imageData.data.set(this.toRgbaArray());
+            return imageData;
+          }
+        }
+
+      function getImageDataMap (imageData) {
+        const map = new Array(imageData.height);
+        for (let y = 0; y < imageData.height; y++) {
+          map[y] = []
+          for (let x = 0; x < imageData.width; x++) {
+            const pos = (y * imageData.width + x) * 4;
+            const pixel = new Pixel({
+              r: imageData.data[pos],
+              g: imageData.data[pos + 1],
+              b: imageData.data[pos + 2],
+              a: imageData.data[pos + 3],
+              x: x,
+              y: y,
+              dx: x,
+              dy: y
+            });
+            map[y].push(pixel)
+          }
+        }
+        return map;
+      }
+
+      function imageMap2imageData (imageMap) {
+        const imageData = new ImageData(imageMap[0].length, imageMap.length);
+        const imageArray = []
+        for (let y = 0; y < imageMap.length; y++) {
+          for (let x = 0; x < imageMap[y].length; x++) {
+            imageArray.push(...imageMap[y][x].toRgbaArray())
+          }
+        }
+        imageData.data.set(imageArray)
+        return imageData
+      }
+
+      window.onload = function () {
+        const thanosBtn = document.getElementById('thanos-btn')
+        const canvasA = document.getElementById('canvas-a')
+        const canvasB = document.getElementById('canvas-b')
+        const ctxA = canvasA.getContext('2d');
+        const ctxB = canvasB.getContext('2d');
+        const image = new Image();
+        image.src = 'demo.png';
+
+        let imageDataA
+        let imageDataMap
+
+        image.onload = function () {
+          canvasA.width = image.width
+          canvasA.height = image.height
+          canvasB.width = image.width
+          canvasB.height = image.height
+          ctxA.drawImage(image, 0, 0)
+          imageDataA = ctxA.getImageData(0, 0, canvasA.width, canvasA.height);
+          imageDataMap = getImageDataMap(imageDataA);
+        }
+
+        thanosBtn.addEventListener('click', () => {
+          window.requestAnimationFrame(animate);
+        })
+
+        let distance = 1;
+        function animate () {
+          ctxA.clearRect(0, 0, canvasA.width, canvasA.height);
+          for (let y = 0; y < imageDataMap.length; y++) {
+            const row = imageDataMap[y];
+            for (let x = 0; x < row.length; x++) {
+              if (x % 2 || y % 2) {
+                row[x] = new Pixel()
+              }
+              row[x] = row[x + 1] || new Pixel()
+            }
+          }
+          const renderData = imageMap2imageData(imageDataMap);
+          ctxA.putImageData(renderData, 0, 0);
+          distance = distance + 1;
+          if (distance < 20) {
+            window.requestAnimationFrame(animate);
+          }
+        }
+      }
+    })()
+  </script>
+</body>
+</html>
