@@ -8,7 +8,7 @@
     "type": "node",
     "request": "launch",
     "name": "RNP",
-    "program": "${workspaceFolder}/leetcode/栈和队列/RNP.js"
+    "program": "${workspaceFolder}/leetcode/栈和队列/岛屿数量.js"
   }
   ]
 }
