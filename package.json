@@ -7,14 +7,22 @@
     "rxjs": "^6.3.3"
   },
   "devDependencies": {
+    "@commitlint/config-conventional": "^8.0.0",
     "commitizen": "^3.1.1",
     "commitlint": "^8.0.0",
     "cz-conventional-changelog": "^2.1.0",
-    "husky": "^2.3.0"
+    "husky": "^2.3.0",
+    "standard-version": "^6.0.1"
   },
   "config": {
     "commitzen": {
       "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo pre",
+      "commit-msg": "commitlint -e $GIT_PARAMS"
     }
   }
 }
